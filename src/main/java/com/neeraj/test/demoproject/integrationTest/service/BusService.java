@@ -51,10 +51,10 @@ public class BusService {
 
     public List<TopBusLinesStopsResponse> getBusLinesWithMaxnumberOfBusStops(int max) {
         List<TopBusLinesStopsResponse> busNumber = new ArrayList<>();
-        final Object[] topBusNumbers = busInformationRepository.findTopBusNumbers();
-        for (int i = 0; i < topBusNumbers.length & i < (max - 1); i++) {
+        final Object[][] topBusNumbers = busInformationRepository.findTopBusNumbers();
+        for (int i = 0; (i < topBusNumbers.length) && (i < max); i++) {
             TopBusLinesStopsResponse topBusLinesStopsResponse = new TopBusLinesStopsResponse();
-            Object[] topBusNumberRow = (Object[]) topBusNumbers[i];
+            Object[] topBusNumberRow = topBusNumbers[i];
             topBusLinesStopsResponse.setBusNumer(topBusNumberRow[0].toString());
             topBusLinesStopsResponse.setNoOfStops(topBusNumberRow[1].toString());
             busNumber.add(topBusLinesStopsResponse);

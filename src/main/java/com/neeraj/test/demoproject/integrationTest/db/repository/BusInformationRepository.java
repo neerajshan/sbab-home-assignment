@@ -18,6 +18,6 @@ public interface BusInformationRepository extends CrudRepository<Businformation,
     @Query(
             value = "SELECT BUSNUMBER , COUNT(BUSNUMBER) as TOTAL FROM BUSINFORMATION group by BUSNUMBER order by TOTAL desc",
             nativeQuery = true)
-    Object[] findTopBusNumbers();
+    Object[][] findTopBusNumbers();
 
 }
