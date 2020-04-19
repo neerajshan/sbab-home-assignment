@@ -1,6 +1,6 @@
 package com.neeraj.test.demoproject.integrationtest.initlizesetup;
 
-import com.neeraj.test.demoproject.integrationTest.SbabTestProjectApplication;
+import com.sbab.home.assignment.SbabTestProjectApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

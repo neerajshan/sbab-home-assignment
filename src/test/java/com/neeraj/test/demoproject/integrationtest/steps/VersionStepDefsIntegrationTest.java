@@ -11,9 +11,12 @@ import static org.hamcrest.Matchers.is;
 
 public class VersionStepDefsIntegrationTest extends DemoProjectIntegrationTest {
 
+
     @When("^the client calls /version$")
     public void the_client_issues_GET_version() {
-        executeGet("http://localhost:8080/version");
+        String restEndpointUrl = "http://localhost:" + port + "/version";
+        String mediaType = "text/plain";
+        executeGet(restEndpointUrl, mediaType);
     }
 
 

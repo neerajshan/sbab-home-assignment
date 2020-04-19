@@ -1,12 +1,13 @@
 package com.neeraj.test.demoproject.integrationtest.steps;
 
-import com.neeraj.test.demoproject.integrationTest.SbabTestProjectApplication;
 import com.neeraj.test.demoproject.integrationtest.dto.HeaderSettingRequestCallback;
 import com.neeraj.test.demoproject.integrationtest.dto.ResponseResultErrorHandler;
 import com.neeraj.test.demoproject.integrationtest.dto.ResponseResults;
+import com.sbab.home.assignment.SbabTestProjectApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.client.RestTemplate;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@SpringBootTest(classes = SbabTestProjectApplication.class, webEnvironment = WebEnvironment.DEFINED_PORT)
+@SpringBootTest(classes = SbabTestProjectApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 @ContextConfiguration
 public class DemoProjectIntegrationTest {
     protected static ResponseResults latestResponse = null;
@@ -23,10 +24,14 @@ public class DemoProjectIntegrationTest {
     @Autowired
     protected RestTemplate restTemplate;
 
+    @LocalServerPort
+    protected int port;
 
-    protected void executeGet(String url) {
+
+    protected void executeGet(String url, String mediaType) {
         final Map<String, String> headers = new HashMap<>();
-        headers.put("Accept", "application/json");
+        // headers.put("Accept", "application/json");
+        headers.put("Accept", mediaType);
         final HeaderSettingRequestCallback requestCallback = new HeaderSettingRequestCallback(headers);
         final ResponseResultErrorHandler errorHandler = new ResponseResultErrorHandler();
 
@@ -52,8 +57,10 @@ public class DemoProjectIntegrationTest {
         }
 
         restTemplate.setErrorHandler(errorHandler);
+        String restEndpointUrl = "http://localhost:" + port;
+
         latestResponse = restTemplate
-                .execute("http://localhost:8080/baeldung", HttpMethod.POST, requestCallback, response -> {
+                .execute(restEndpointUrl + "/baeldung", HttpMethod.POST, requestCallback, response -> {
                     if (errorHandler.getHadError()) {
                         return (errorHandler.getResults());
                     } else {

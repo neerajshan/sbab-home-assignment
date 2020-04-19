@@ -1,0 +1,53 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:inttestdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+    show-sql: off
+    properties:
+      hibernate:
+        format_sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: WARN
+        type:
+          descriptor:
+            sql:
+              BasicBinder:  WARN
+      springframework:  WARN
+#  pattern:
+#    console: %d{yyyy-MM-dd HH:mm:ss} - %msg%n
+
+springdoc:
+  swagger-ui:
+    path: /swagger
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:  health,info
+    jmx:
+      exposure:
+        include: "*"
+
+
+application:
+  cachedFilepath: "src/test/resources/jour.json"
+  apiUrl: "https://api.sl.se/api2/linedata.json?key=03ce1bba776343338f7e7790a58aa59f&model=jour&DefaultTransportModeCode=BUS"
+  api:
+    offlineMode: true
+    readTimeOut: 10_000
+    connectionTimeOut: 10_000
+
