@@ -1,11 +1,16 @@
-DROP TABLE IF EXISTS users;
-
-CREATE TABLE users
-(
-    id                  INT AUTO_INCREMENT PRIMARY KEY,
-    username            VARCHAR(250) NOT NULL,
-    super_secret_secret VARCHAR(32)  NOT NULL
-);
-
-INSERT INTO users (username, super_secret_secret)
-VALUES ('neeraj', 'KBWUUPIJZ4ZOPUMT3OJHHI4JTWPWUKP5');
+INSERT INTO BUSINFORMATION (busnumber, directioncode, busstopnumber)
+VALUES ('1', '1', '10008'),
+       ('1', '1', '10009'),
+       ('1', '1', '10010'),
+       ('2', '1', '10011'),
+       ('2', '1', '10012'),
+       ('2', '1', '10013'),
+       ('2', '1', '10013'),
+       ('3', '1', '10013'),
+       ('3', '1', '10013'),
+       ('5', '1', '10013'),
+       ('5', '1', '10013'),
+       ('5', '1', '10013'),
+       ('5', '1', '10013'),
+       ('5', '1', '10013'),
+       ('5', '1', '10013');

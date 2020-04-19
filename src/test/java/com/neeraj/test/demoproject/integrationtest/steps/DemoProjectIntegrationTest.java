@@ -1,6 +1,6 @@
 package com.neeraj.test.demoproject.integrationtest.steps;
 
-import com.neeraj.test.demoproject.integrationTest.DemoProjectApplication;
+import com.neeraj.test.demoproject.integrationTest.SbabTestProjectApplication;
 import com.neeraj.test.demoproject.integrationtest.dto.HeaderSettingRequestCallback;
 import com.neeraj.test.demoproject.integrationtest.dto.ResponseResultErrorHandler;
 import com.neeraj.test.demoproject.integrationtest.dto.ResponseResults;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@SpringBootTest(classes = DemoProjectApplication.class, webEnvironment = WebEnvironment.DEFINED_PORT)
+@SpringBootTest(classes = SbabTestProjectApplication.class, webEnvironment = WebEnvironment.DEFINED_PORT)
 @ContextConfiguration
 public class DemoProjectIntegrationTest {
     protected static ResponseResults latestResponse = null;
