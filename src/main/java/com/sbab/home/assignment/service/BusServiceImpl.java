@@ -61,7 +61,6 @@ public class BusServiceImpl implements BusService {
 
 
     private TopBusLinesStopsResponse convertToDto(TopBusResult topBusResult) {
-        // return modelMapper.map(topBusResult, TopBusLinesStopsResponse.class);
         return new TopBusLinesStopsResponse(topBusResult.getBusNumber(), topBusResult.getStopCounts().toString());
     }
 

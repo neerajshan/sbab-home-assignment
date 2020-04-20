@@ -1,16 +1,18 @@
 package com.sbab.home.assignment.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import lombok.Setter;
 
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class APIError {
+    @Getter
+    @Setter
     String message;
+    @Getter
+    @Setter
     String trackingCode;
-
-
-    public APIError() {
-    }
 
 
     public APIError(String message) {
@@ -24,31 +26,4 @@ public class APIError {
     }
 
 
-    public String getMessage() {
-        return message;
-    }
-
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-
-    public String getTrackingCode() {
-        return trackingCode;
-    }
-
-
-    public void setTrackingCode(String trackingCode) {
-        this.trackingCode = trackingCode;
-    }
-
-
-    @Override
-    public String toString() {
-        return "APIError{" +
-               "message='" + message + '\'' +
-               ", trackingCode='" + trackingCode + '\'' +
-               '}';
-    }
 }
