@@ -60,7 +60,7 @@ public class DemoProjectIntegrationTest {
         String restEndpointUrl = "http://localhost:" + port;
 
         latestResponse = restTemplate
-                .execute(restEndpointUrl + "/baeldung", HttpMethod.POST, requestCallback, response -> {
+                .execute(restEndpointUrl + "/businformation", HttpMethod.POST, requestCallback, response -> {
                     if (errorHandler.getHadError()) {
                         return (errorHandler.getResults());
                     } else {
