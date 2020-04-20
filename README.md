@@ -47,5 +47,5 @@ You can register your own account at Trafiklab and obtain an API key.
 ### Testing Strategy
 - Junit Test cases are added for validating Service layer logic
 - For testing rest api and ensuring testing of requirements integration test are written using cucumber 
-- All Test senrioes are mentioned under `src/test/resources/features`
+- All Test sentries are mentioned under `src/test/resources/features`
 ---
