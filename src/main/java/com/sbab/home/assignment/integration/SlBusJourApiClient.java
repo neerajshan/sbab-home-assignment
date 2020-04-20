@@ -52,14 +52,7 @@ public class SlBusJourApiClient {
     @PostConstruct
     @Scheduled(cron = "0 0 0 * * ?")
     public void fetchDataAndPopulateDatabase() throws IOException {
-        String responseBody;
-        if (!offlineMode) {
-            responseBody = getApiResponseData();
-        } else {
-            responseBody = readCachedFile();
-        }
-
-
+        String responseBody = offlineMode ? readCachedFile() : getApiResponseData();
         List<BusJourResponse> busJourResponseList = getBusJourResponseList(responseBody);
         persistBusJourData(busJourResponseList);
         LOG.info("Application is ready now");
@@ -74,7 +67,7 @@ public class SlBusJourApiClient {
             LOG.info("Successfully called api");
         } catch (Exception e) {
             LOG.error("failed calling  api due to error", e);
-            // n.w. read or connection time out has occured read cached file
+            // n.w. read or connection time out has occurred read cached file
             LOG.info("reading data from Cached File");
             responseBody = readCachedFile();
         }

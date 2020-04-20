@@ -72,9 +72,10 @@ public class BusService {
     public List<TopBusLinesStopsResponse> getBusLinesWithMaxnumberOfBusStops(int max) {
         List<TopBusLinesStopsResponse> busNumber = new ArrayList<>();
         final Object[][] topBusNumbers = busInformationRepository.findTopBusNumbers();
-        for (int i = 0; (i < topBusNumbers.length) && (i < max); i++) {
+
+        for (int index = 0; (index < topBusNumbers.length) && (index < max); index++) {
             TopBusLinesStopsResponse topBusLinesStopsResponse = new TopBusLinesStopsResponse();
-            Object[] topBusNumberRow = topBusNumbers[i];
+            Object[] topBusNumberRow = topBusNumbers[index];
             topBusLinesStopsResponse.setBusNumer(topBusNumberRow[0].toString());
             topBusLinesStopsResponse.setNoOfStops(topBusNumberRow[1].toString());
             busNumber.add(topBusLinesStopsResponse);
