@@ -6,7 +6,6 @@ import com.sbab.home.assignment.db.repository.BusInformationRepository.TopBusRes
 import com.sbab.home.assignment.dto.BusStopsResponse;
 import com.sbab.home.assignment.dto.TopBusLinesStopsResponse;
 import com.sbab.home.assignment.exceptionhandler.exceptions.BusNotFoundException;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +22,11 @@ public class BusServiceImpl implements BusService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BusServiceImpl.class);
     BusInformationRepository busInformationRepository;
-    ModelMapper modelMapper;
 
 
     @Autowired
-    public BusServiceImpl(BusInformationRepository busInformationRepository, ModelMapper modelMapper) {
+    public BusServiceImpl(BusInformationRepository busInformationRepository) {
         this.busInformationRepository = busInformationRepository;
-        this.modelMapper = modelMapper;
     }
 
 
