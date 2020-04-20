@@ -1,4 +1,4 @@
-package com.neeraj.test.demoproject.integrationtest.steps;
+package com.sbab.home.assignment.integrationtest.steps;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;

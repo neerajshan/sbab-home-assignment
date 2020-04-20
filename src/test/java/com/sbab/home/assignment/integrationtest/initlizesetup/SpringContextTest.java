@@ -1,4 +1,4 @@
-package com.neeraj.test.demoproject.integrationtest.initlizesetup;
+package com.sbab.home.assignment.integrationtest.initlizesetup;
 
 import com.sbab.home.assignment.SbabTestProjectApplication;
 import org.junit.Test;

@@ -1,9 +1,9 @@
-package com.neeraj.test.demoproject.integrationtest.steps;
+package com.sbab.home.assignment.integrationtest.steps;
 
-import com.neeraj.test.demoproject.integrationtest.dto.HeaderSettingRequestCallback;
-import com.neeraj.test.demoproject.integrationtest.dto.ResponseResultErrorHandler;
-import com.neeraj.test.demoproject.integrationtest.dto.ResponseResults;
 import com.sbab.home.assignment.SbabTestProjectApplication;
+import com.sbab.home.assignment.integrationtest.dto.HeaderSettingRequestCallback;
+import com.sbab.home.assignment.integrationtest.dto.ResponseResultErrorHandler;
+import com.sbab.home.assignment.integrationtest.dto.ResponseResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;

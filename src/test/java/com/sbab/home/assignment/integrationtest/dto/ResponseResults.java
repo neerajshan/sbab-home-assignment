@@ -1,4 +1,4 @@
-package com.neeraj.test.demoproject.integrationtest.dto;
+package com.sbab.home.assignment.integrationtest.dto;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.client.ClientHttpResponse;
