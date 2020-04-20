@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/bus")
-@Tag(name = "Bus Service Application", description = "Bus API")
+@Tag(name = "Bus Service Application", description = "Bus API V1")
 public class BusInformationController {
 
     BusService busService;
@@ -37,7 +37,7 @@ public class BusInformationController {
 
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Endpoint for Find all Buses", description = "", tags = {"Bus API"})
+    @Operation(summary = "Endpoint for Find all Buses", description = "", tags = {"Bus API V1"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
@@ -48,7 +48,7 @@ public class BusInformationController {
 
     @GetMapping(value = "/{busnumber}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Endpoint for Find all Bus stops for input Bus number", description = "", tags = {"Bus API"})
+    @Operation(summary = "Endpoint for Find all Bus stops for input Bus number", description = "", tags = {"Bus API V1"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully"),
             @ApiResponse(responseCode = "404", description = "Invalid input"),
@@ -63,7 +63,7 @@ public class BusInformationController {
 
     @GetMapping(value = "/topbuslines", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Endpoint for Find top 10 BusLine with most number of bus stops", description = "", tags = {"Bus API"})
+    @Operation(summary = "Endpoint for Find top 10 BusLine with most number of bus stops", description = "", tags = {"Bus API V1"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
