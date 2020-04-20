@@ -95,7 +95,7 @@ public class SlBusJourApiClient {
         });
     }
 
-
+    // fall back method in case of  sl api end is not available
     private String readCachedFile() throws IOException {
         return Files.readString(Paths.get(cachedFilepath));
     }

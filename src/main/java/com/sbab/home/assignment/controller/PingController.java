@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 
+/**
+ * Health Check End points
+ */
+
 @RestController
 public class PingController {
 
