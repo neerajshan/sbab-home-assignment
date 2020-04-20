@@ -1,4 +1,4 @@
-package com.sbab.home.assignment.integration;
+package com.sbab.home.assignment.apiIntegration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

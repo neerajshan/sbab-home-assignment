@@ -1,4 +1,4 @@
-package com.sbab.home.assignment.integration;
+package com.sbab.home.assignment.apiIntegration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
