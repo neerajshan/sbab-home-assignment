@@ -24,8 +24,6 @@ public interface BusInformationRepository extends CrudRepository<Businformation,
 
     interface TopBusResult {
         String getBusNumber();
-
-
         Integer getStopCounts();
     }
 
