@@ -39,3 +39,8 @@ You can register your own account at Trafiklab and obtain an API key.
 - In that case application will use cachedFile which is available on path  `src/test/resources/jour.json`
 - Choice of H2 database is for simplicity of test, however just change property application can be configured to any other database.
 - Sl api documentation says, they refresh data in every 24h, therefore data can be store in database for 24 hours and a scheduler can fatah fresh data in given intervals  
+---
+### Testing Strategy
+- Junit Test cases are added for validating Service layer logic
+- For testing rest api and ensuring testing of requirements integration test are written using cucumber 
+- All Test senrioes are mentioned under `src/test/resources/features`
