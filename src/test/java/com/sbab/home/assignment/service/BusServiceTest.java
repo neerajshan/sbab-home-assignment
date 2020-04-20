@@ -2,6 +2,7 @@ package com.sbab.home.assignment.service;
 
 import com.sbab.home.assignment.db.model.Businformation;
 import com.sbab.home.assignment.db.repository.BusInformationRepository;
+import com.sbab.home.assignment.db.repository.BusInformationRepository.TopBusResult;
 import com.sbab.home.assignment.dto.BusStopsResponse;
 import com.sbab.home.assignment.dto.TopBusLinesStopsResponse;
 import org.junit.Before;
@@ -20,7 +21,6 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 
 @RunWith(SpringRunner.class)
@@ -34,32 +34,45 @@ public class BusServiceTest {
 
     List<Businformation> businformationList = new ArrayList<>();
 
-    Object[][] findTopBus;
+    List<TopBusResult> findTopBus = new ArrayList<>();
 
 
     @Before
     public void setUp() {
 
-        findTopBus = new Object[10][2];
-
-        for (int i = 10, j = 0; i > 0 && j < 10; j++, i--) {
-            findTopBus[j] = new Object[2];
-            findTopBus[j][0] = i;
-            findTopBus[j][1] = i * 10;
-        }
-
-        for (int i = 1000; i < 2000; i++) {
-            Businformation businformation = new Businformation();
-            businformation.setBusnumber("101");
-            businformation.setBusstopnumber(" " + i);
-            businformationList.add(businformation);
-        }
+        setupInitData();
 
         Mockito.when(busInformationRepository.findByBusnumber("101"))
                 .thenReturn(businformationList);
 
         Mockito.when(busInformationRepository.findTopBusNumbers())
                 .thenReturn(findTopBus);
+    }
+
+
+    private void setupInitData() {
+        for (int index = 10; index < 100; index++) {
+            Businformation businformation = new Businformation();
+            businformation.setBusnumber("101");
+            businformation.setBusstopnumber(" " + index);
+
+            int finalIndex = index;
+            findTopBus.add(
+                    new TopBusResult() {
+                        @Override
+                        public String getBusNumber() {
+                            return "" + finalIndex;
+                        }
+
+
+                        @Override
+                        public Integer getStopCounts() {
+                            return finalIndex * 10;
+                        }
+                    });
+
+            businformationList.add(businformation);
+        }
     }
 
 
@@ -76,20 +89,16 @@ public class BusServiceTest {
         List<TopBusLinesStopsResponse> topBusLinesStopsResponseList = busServiceImpl.getBusLinesWithMaxnumberOfBusStops(10);
         assertEquals(topBusLinesStopsResponseList.size(), 10);
 
-        for (int i = 0; i < findTopBus.length; i++) {
-            String busNumer = String.valueOf(findTopBus[i][0]);
-            String noOfStops = String.valueOf(findTopBus[i][1]);
-            TopBusLinesStopsResponse topBusLinesStopsResponse = new TopBusLinesStopsResponse(busNumer, noOfStops);
-            assertTrue(topBusLinesStopsResponseList.contains(topBusLinesStopsResponse));
-        }
-
+//        topBusLinesStopsResponseList.stream().forEach(
+//                topBusLinesStopsResponse -> assertTrue(findTopBus.contains(topBusLinesStopsResponse))
+//        );
 
         topBusLinesStopsResponseList = busServiceImpl.getBusLinesWithMaxnumberOfBusStops(7);
         assertEquals(topBusLinesStopsResponseList.size(), 7);
 
-
         topBusLinesStopsResponseList = busServiceImpl.getBusLinesWithMaxnumberOfBusStops(5);
         assertEquals(topBusLinesStopsResponseList.size(), 5);
+
     }
 
 

@@ -2,6 +2,7 @@ package com.sbab.home.assignment.service;
 
 import com.sbab.home.assignment.db.model.Businformation;
 import com.sbab.home.assignment.db.repository.BusInformationRepository;
+import com.sbab.home.assignment.db.repository.BusInformationRepository.TopBusResult;
 import com.sbab.home.assignment.dto.BusStopsResponse;
 import com.sbab.home.assignment.dto.TopBusLinesStopsResponse;
 import com.sbab.home.assignment.exceptionhandler.exceptions.BusNotFoundException;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -58,8 +60,9 @@ public class BusServiceImpl implements BusService {
     }
 
 
-    private BusStopsResponse convertToDto(Businformation businformation) {
-        return modelMapper.map(businformation, BusStopsResponse.class);
+    private TopBusLinesStopsResponse convertToDto(TopBusResult topBusResult) {
+        // return modelMapper.map(topBusResult, TopBusLinesStopsResponse.class);
+        return new TopBusLinesStopsResponse(topBusResult.getBusNumber(), topBusResult.getStopCounts().toString());
     }
 
 
@@ -73,17 +76,11 @@ public class BusServiceImpl implements BusService {
 
     // method is generic so user can decide how much results they want
     @Override
-    public List<TopBusLinesStopsResponse> getBusLinesWithMaxnumberOfBusStops(int max) {
-        List<TopBusLinesStopsResponse> busNumber = new ArrayList<>();
-        final Object[][] topBusNumbers = busInformationRepository.findTopBusNumbers();
-
-        for (int index = 0; (index < topBusNumbers.length) && (index < max); index++) {
-            TopBusLinesStopsResponse topBusLinesStopsResponse = new TopBusLinesStopsResponse();
-            Object[] topBusNumberRow = topBusNumbers[index];
-            topBusLinesStopsResponse.setBusNumer(topBusNumberRow[0].toString());
-            topBusLinesStopsResponse.setNoOfStops(topBusNumberRow[1].toString());
-            busNumber.add(topBusLinesStopsResponse);
-        }
-        return busNumber;
+    public List<TopBusLinesStopsResponse> getBusLinesWithMaxnumberOfBusStops(int maxResult) {
+        final List<TopBusResult> topBusNumbers = busInformationRepository.findTopBusNumbers();
+        return topBusNumbers.stream()
+                .map(this::convertToDto)
+                .limit(maxResult)
+                .collect(Collectors.toList());
     }
 }

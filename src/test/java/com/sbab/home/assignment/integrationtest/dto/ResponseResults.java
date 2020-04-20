@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 
+import static java.nio.charset.StandardCharsets.US_ASCII;
+
 
 public class ResponseResults {
     private final ClientHttpResponse theResponse;
@@ -17,7 +19,7 @@ public class ResponseResults {
         this.theResponse = response;
         final InputStream bodyInputStream = response.getBody();
         final StringWriter stringWriter = new StringWriter();
-        IOUtils.copy(bodyInputStream, stringWriter);
+        IOUtils.copy(bodyInputStream, stringWriter, US_ASCII);
         this.body = stringWriter.toString();
     }
 
