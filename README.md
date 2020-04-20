@@ -40,7 +40,7 @@ You can register your own account at Trafiklab and obtain an API key.
 - In that case application will use cachedFile which is available on path  `src/test/resources/jour.json`
 - Choice of H2 database is for simplicity of test, however just change property application can be configured to any other database.
 - Sl api documentation says, they refresh data in every 24h, therefore data can be store in database for 24 hours and a scheduler can fatah fresh data in given intervals
-- Layered approach Controllers -> Service -> DatabaseRepository --> Database queries   
+- Layered approach `Controllers -> Service -> DatabaseRepository --> Database queries`  
 - SpringBeans are used for bossiness & persistence layer  
 
 ---
