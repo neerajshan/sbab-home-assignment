@@ -1,42 +1,42 @@
 [
   {
-    "busNumer": "626",
-    "noOfStops": "118"
+    "busNumber": "626",
+    "stopsCount": "118"
   },
   {
-    "busNumer": "636",
-    "noOfStops": "116"
+    "busNumber": "636",
+    "stopsCount": "116"
   },
   {
-    "busNumer": "637",
-    "noOfStops": "104"
+    "busNumber": "637",
+    "stopsCount": "104"
   },
   {
-    "busNumer": "620",
-    "noOfStops": "90"
+    "busNumber": "620",
+    "stopsCount": "90"
   },
   {
-    "busNumer": "312",
-    "noOfStops": "84"
+    "busNumber": "312",
+    "stopsCount": "84"
   },
   {
-    "busNumer": "639",
-    "noOfStops": "80"
+    "busNumber": "639",
+    "stopsCount": "80"
   },
   {
-    "busNumer": "785",
-    "noOfStops": "80"
+    "busNumber": "785",
+    "stopsCount": "80"
   },
   {
-    "busNumer": "783",
-    "noOfStops": "78"
+    "busNumber": "783",
+    "stopsCount": "78"
   },
   {
-    "busNumer": "632",
-    "noOfStops": "77"
+    "busNumber": "632",
+    "stopsCount": "77"
   },
   {
-    "busNumer": "634",
-    "noOfStops": "76"
+    "busNumber": "634",
+    "stopsCount": "76"
   }
 ]

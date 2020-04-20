@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TopBusLinesStopsResponse {
-    String busNumer;
-    String noOfStops;
+    String busNumber;
+    String stopsCount;
 
 }
