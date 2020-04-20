@@ -8,6 +8,16 @@ public class TopBusLinesStopsResponse {
     String noOfStops;
 
 
+    public TopBusLinesStopsResponse() {
+    }
+
+
+    public TopBusLinesStopsResponse(String busNumer, String noOfStops) {
+        this.busNumer = busNumer;
+        this.noOfStops = noOfStops;
+    }
+
+
     public String getBusNumer() {
         return busNumer;
     }

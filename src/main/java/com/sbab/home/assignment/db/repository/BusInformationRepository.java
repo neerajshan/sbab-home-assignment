@@ -10,7 +10,6 @@ import java.util.Collection;
 public interface BusInformationRepository extends CrudRepository<Businformation, Long> {
     Collection<Businformation> findByBusnumber(String busnumber);
 
-
     @Query("SELECT distinct busnumber FROM Businformation")
     Collection<String> findAllUniqueBusNumbers();
 

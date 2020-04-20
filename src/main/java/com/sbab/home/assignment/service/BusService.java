@@ -4,6 +4,7 @@ import com.sbab.home.assignment.db.model.Businformation;
 import com.sbab.home.assignment.db.repository.BusInformationRepository;
 import com.sbab.home.assignment.dto.BusStopsResponse;
 import com.sbab.home.assignment.dto.TopBusLinesStopsResponse;
+import com.sbab.home.assignment.exceptionhandler.exceptions.BusNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +19,11 @@ import java.util.List;
 @Service
 public class BusService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(BusService.class);
     BusInformationRepository busInformationRepository;
     ModelMapper modelMapper;
 
-    private static final Logger LOG = LoggerFactory.getLogger(BusService.class);
+
     @Autowired
     public BusService(BusInformationRepository busInformationRepository, ModelMapper modelMapper) {
         this.busInformationRepository = busInformationRepository;
@@ -29,11 +31,18 @@ public class BusService {
     }
 
 
-    public BusStopsResponse findAllStopsForBusenumber(String busnumber) {
+    public BusStopsResponse findAllStopsForBusnumber(String busnumber) {
         BusStopsResponse busStopsResponse = new BusStopsResponse();
         Collection<String> stops = new ArrayList<>();
         busStopsResponse.setBusnumber(busnumber);
-        for (Businformation bs : busInformationRepository.findByBusnumber(busnumber)) {
+        final Collection<Businformation> byBusnumber = busInformationRepository.findByBusnumber(busnumber);
+        if (byBusnumber.size() == 0) // Invalid bus number
+        {
+            LOG.warn("Input Bus no {} is not a valid bus number", busnumber);
+            throw new BusNotFoundException(String.format("Bus no %s is not a valid busnumber", busnumber));
+        }
+
+        for (Businformation bs : byBusnumber) {
             stops.add(bs.getBusstopnumber());
         }
         busStopsResponse.setStops(stops);
@@ -41,6 +50,7 @@ public class BusService {
     }
 
 
+    // return list of unique bus numbers
     public Collection<String> getAllBuses() {
         return (busInformationRepository.findAllUniqueBusNumbers());
     }
@@ -51,17 +61,14 @@ public class BusService {
     }
 
 
-    public void saveAllBusinformation(List<Businformation> businformationList) {
-        busInformationRepository.saveAll(businformationList);
-    }
-
-
+    // intended to be called by schedulers
     public void refresh(List<Businformation> businformationList) {
         busInformationRepository.deleteAll();
         busInformationRepository.saveAll(businformationList);
     }
 
 
+    // method is generic so user can decide how much results they want
     public List<TopBusLinesStopsResponse> getBusLinesWithMaxnumberOfBusStops(int max) {
         List<TopBusLinesStopsResponse> busNumber = new ArrayList<>();
         final Object[][] topBusNumbers = busInformationRepository.findTopBusNumbers();

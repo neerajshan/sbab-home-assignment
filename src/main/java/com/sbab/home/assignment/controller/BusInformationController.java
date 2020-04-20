@@ -39,7 +39,7 @@ public class BusInformationController {
     @GetMapping(value = "/{busnumber}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public BusStopsResponse findBusStopsForGivenBusnumber(@PathVariable("busnumber") String busnumber) {
-        return busService.findAllStopsForBusenumber(busnumber);
+        return busService.findAllStopsForBusnumber(busnumber);
     }
 
 
