@@ -49,7 +49,7 @@ application:
   cachedFilepath: "src/test/resources/jour.json"
   apiUrl: "https://api.sl.se/api2/linedata.json?key=03ce1bba776343338f7e7790a58aa59f&model=jour&DefaultTransportModeCode=BUS"
   api:
-    offlineMode: false
+    offlineMode: false #truning true means it will not call to sl apiendpoint & data will be fetched from cachedFilepath instead
     readTimeOut: 10_000
     connectionTimeOut: 10_000
 

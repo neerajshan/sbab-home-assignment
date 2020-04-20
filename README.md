@@ -32,15 +32,20 @@ You can register your own account at Trafiklab and obtain an API key.
   This is, of course, a proof of concept and should not be deployed publicly.
 ---
 ### Design considerations
+- All application configurations are defined under application.yaml
 - On application startup sl api endpoint are called and retrieves data.
 - Data is stored in memory database
 - N.W. read Timeout or Connection time out exception scenarios
   There is chance due to n.w. slowness or bad connectivity application might not be able to make call to sl api.
 - In that case application will use cachedFile which is available on path  `src/test/resources/jour.json`
 - Choice of H2 database is for simplicity of test, however just change property application can be configured to any other database.
-- Sl api documentation says, they refresh data in every 24h, therefore data can be store in database for 24 hours and a scheduler can fatah fresh data in given intervals  
+- Sl api documentation says, they refresh data in every 24h, therefore data can be store in database for 24 hours and a scheduler can fatah fresh data in given intervals
+- Layered approach Controllers -> Service -> DatabaseRepository --> Database queries   
+- SpringBeans are used for bossiness & persistence layer  
+
 ---
 ### Testing Strategy
 - Junit Test cases are added for validating Service layer logic
 - For testing rest api and ensuring testing of requirements integration test are written using cucumber 
 - All Test senrioes are mentioned under `src/test/resources/features`
+---
