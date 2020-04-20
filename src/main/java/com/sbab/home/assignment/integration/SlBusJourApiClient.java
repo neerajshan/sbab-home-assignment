@@ -32,7 +32,7 @@ public class SlBusJourApiClient {
     private static final Logger LOG = LoggerFactory.getLogger(SlBusJourApiClient.class);
     RestTemplate restTemplate;
 
-    BusService busService;
+    BusService busServiceImpl;
 
     @Value("${application.cachedFilepath}")
     String cachedFilepath;
@@ -43,9 +43,9 @@ public class SlBusJourApiClient {
 
 
     @Autowired
-    public SlBusJourApiClient(RestTemplate restTemplate, BusService busService) {
+    public SlBusJourApiClient(RestTemplate restTemplate, BusService busServiceImpl) {
         this.restTemplate = restTemplate;
-        this.busService = busService;
+        this.busServiceImpl = busServiceImpl;
     }
 
 
@@ -80,7 +80,7 @@ public class SlBusJourApiClient {
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
 
-        busService.refresh(businformationList);
+        busServiceImpl.refresh(businformationList);
         LOG.info("Saved all  " + businformationList.size());
 
     }
@@ -94,6 +94,7 @@ public class SlBusJourApiClient {
         return objectMapper.readValue(result.toLowerCase(), new TypeReference<List<BusJourResponse>>() {
         });
     }
+
 
     // fall back method in case of  sl api end is not available
     private String readCachedFile() throws IOException {

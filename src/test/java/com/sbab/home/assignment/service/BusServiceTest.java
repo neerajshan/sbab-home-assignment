@@ -27,7 +27,7 @@ import static org.junit.Assert.assertTrue;
 public class BusServiceTest {
 
     @Autowired
-    BusService busService;
+    BusService busServiceImpl;
 
     @Autowired
     BusInformationRepository busInformationRepository;
@@ -65,7 +65,7 @@ public class BusServiceTest {
 
     @Test
     public void findAllStopsForBusenumberTest() {
-        final BusStopsResponse allStopsForBusenumber = busService.findAllStopsForBusnumber("101");
+        final BusStopsResponse allStopsForBusenumber = busServiceImpl.findAllStopsForBusnumber("101");
         final Collection<String> stops = allStopsForBusenumber.getStops();
         assertEquals(stops.size(), businformationList.size());
     }
@@ -73,7 +73,7 @@ public class BusServiceTest {
 
     @Test
     public void getBusLinesWithMaxnumberOfBusStopsTest() {
-        List<TopBusLinesStopsResponse> topBusLinesStopsResponseList = busService.getBusLinesWithMaxnumberOfBusStops(10);
+        List<TopBusLinesStopsResponse> topBusLinesStopsResponseList = busServiceImpl.getBusLinesWithMaxnumberOfBusStops(10);
         assertEquals(topBusLinesStopsResponseList.size(), 10);
 
         for (int i = 0; i < findTopBus.length; i++) {
@@ -84,11 +84,11 @@ public class BusServiceTest {
         }
 
 
-        topBusLinesStopsResponseList = busService.getBusLinesWithMaxnumberOfBusStops(7);
+        topBusLinesStopsResponseList = busServiceImpl.getBusLinesWithMaxnumberOfBusStops(7);
         assertEquals(topBusLinesStopsResponseList.size(), 7);
 
 
-        topBusLinesStopsResponseList = busService.getBusLinesWithMaxnumberOfBusStops(5);
+        topBusLinesStopsResponseList = busServiceImpl.getBusLinesWithMaxnumberOfBusStops(5);
         assertEquals(topBusLinesStopsResponseList.size(), 5);
     }
 
@@ -104,7 +104,7 @@ public class BusServiceTest {
 
         @Bean
         public BusService busService() {
-            return new BusService(busInformationRepository, modelMapper);
+            return new BusServiceImpl(busInformationRepository, modelMapper);
         }
     }
 }

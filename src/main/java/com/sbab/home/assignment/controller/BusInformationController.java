@@ -26,12 +26,12 @@ import java.util.List;
 @Tag(name = "Bus Service Application", description = "Bus API V1")
 public class BusInformationController {
 
-    BusService busService;
+    BusService busServiceImpl;
 
 
     @Autowired
-    public BusInformationController(BusService busService) {
-        this.busService = busService;
+    public BusInformationController(BusService busServiceImpl) {
+        this.busServiceImpl = busServiceImpl;
     }
 
 
@@ -42,7 +42,7 @@ public class BusInformationController {
             @ApiResponse(responseCode = "200", description = "Successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     public Collection<String> getAllBuses() {
-        return busService.getAllBuses();
+        return busServiceImpl.getAllBuses();
     }
 
 
@@ -57,7 +57,7 @@ public class BusInformationController {
             @Parameter(name = "busnumber", description = "busnumber to find all stops",
                     required = true)
             @PathVariable("busnumber") String busnumber) {
-        return busService.findAllStopsForBusnumber(busnumber);
+        return busServiceImpl.findAllStopsForBusnumber(busnumber);
     }
 
 
@@ -68,7 +68,7 @@ public class BusInformationController {
             @ApiResponse(responseCode = "200", description = "Successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error")})
     public List<TopBusLinesStopsResponse> getTopBusLines() {
-        return busService.getBusLinesWithMaxnumberOfBusStops(10);
+        return busServiceImpl.getBusLinesWithMaxnumberOfBusStops(10);
     }
 
 
