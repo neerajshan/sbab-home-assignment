@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -49,6 +50,7 @@ public class SlBusJourApiClient {
 
 
     @PostConstruct
+    @Scheduled(cron = "0 0 0 * * ?")
     public void fetchDataAndPopulateDatabase() throws IOException {
         String responseBody;
         if (!offlineMode) {
@@ -85,7 +87,7 @@ public class SlBusJourApiClient {
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
 
-        busService.saveAllBusinformation(businformationList);
+        busService.refresh(businformationList);
         LOG.info("Saved all  " + businformationList.size());
 
     }

@@ -21,8 +21,15 @@ The data should be automatically gathered from API for each run of the applicati
 - Health Check endpoints  
 - BDD Test with Cucumber 
 ---
-#How to Build, run integration test & run project
+# How to Build, run integration test & run project
 - Build project & run integration test `mvn clean install`
 - Run the app with `mvn spring-boot:run` then browse to http://localhost:8080.
 - When the app is running, the in-memory DB can be inspected at http://localhost:8080/h2-console 
 - This is, of course, a proof of concept and should not be deployed publicly.
+---
+# Design considerations
+- On StartUp application tries to connect sl api endpoint and retrieves data.
+- However there is chance due to n.w. slowness or bad connectivity application might not be able to make call to sl api.
+- In that case application will use cachedFile which is available on path  `src/test/resources/jour.json`
+- Choice of H2 database is for simplicity of test, however just change property application can be configured to any other database.
+- Sl api documentation says, they refresh data in every 24h, therefore data can be store in database for 24 hours and a scheduler can fatah fresh data in given intervals  

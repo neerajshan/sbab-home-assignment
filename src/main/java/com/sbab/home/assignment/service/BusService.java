@@ -56,6 +56,12 @@ public class BusService {
     }
 
 
+    public void refresh(List<Businformation> businformationList) {
+        busInformationRepository.deleteAll();
+        busInformationRepository.saveAll(businformationList);
+    }
+
+
     public List<TopBusLinesStopsResponse> getBusLinesWithMaxnumberOfBusStops(int max) {
         List<TopBusLinesStopsResponse> busNumber = new ArrayList<>();
         final Object[][] topBusNumbers = busInformationRepository.findTopBusNumbers();
