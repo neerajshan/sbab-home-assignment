@@ -1,0 +1,42 @@
+[
+  {
+    "busNumer": "626",
+    "noOfStops": "118"
+  },
+  {
+    "busNumer": "636",
+    "noOfStops": "116"
+  },
+  {
+    "busNumer": "637",
+    "noOfStops": "104"
+  },
+  {
+    "busNumer": "620",
+    "noOfStops": "90"
+  },
+  {
+    "busNumer": "312",
+    "noOfStops": "84"
+  },
+  {
+    "busNumer": "639",
+    "noOfStops": "80"
+  },
+  {
+    "busNumer": "785",
+    "noOfStops": "80"
+  },
+  {
+    "busNumer": "783",
+    "noOfStops": "78"
+  },
+  {
+    "busNumer": "632",
+    "noOfStops": "77"
+  },
+  {
+    "busNumer": "634",
+    "noOfStops": "76"
+  }
+]
