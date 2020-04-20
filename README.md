@@ -13,25 +13,25 @@ http://www.trafiklab.se/api/sl-hallplatser-och-linjer-2.
 You can register your own account at Trafiklab and obtain an API key.
 - The data should be automatically gathered from API for each run of the application.
 
-## Solution Language & Framework choice
+### Solution Language & Framework choice
 - Java 11
 - Spring boot Project
-- Maven build tool for project and running integration test
+- Maven 3+ for building project and running integration test
 - Spring Data JPA for persistence layer
 - H2 in memory database 
 - Swagger 3 for Api Documentation 
 - RestController for Apis
 - Health Check endpoints  
-- BDD Test with Cucumber 
+- Cucumber framework for running Integration test 
 ---
-## How to Build, run integration test & run project
-- Build project & run integration test `mvn clean install`
-- Run the app with `mvn spring-boot:run` then browse to http://localhost:8080
+### How to Build, run integration test & run project
+- Build project & run integration test  $ `mvn clean install`
+- Run the app with  $ `mvn spring-boot:run` then browse to http://localhost:8080
 - To access Swagger for testing Apies then browse to http://localhost:8080/swagger
 - When the app is running, the in-memory DB can be inspected at http://localhost:8080/h2-console 
-- This is, of course, a proof of concept and should not be deployed publicly.
+  This is, of course, a proof of concept and should not be deployed publicly.
 ---
-## Design considerations
+### Design considerations
 - On StartUp application tries to connect sl api endpoint and retrieves data.
 - However there is chance due to n.w. slowness or bad connectivity application might not be able to make call to sl api.
 - In that case application will use cachedFile which is available on path  `src/test/resources/jour.json`
