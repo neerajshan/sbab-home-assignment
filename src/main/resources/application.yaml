@@ -8,10 +8,14 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: none
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
+        generate_statistics: false
         format_sql: true
+        jdbc:
+          batch_size: 1000
+          order_inserts: true
   h2:
     console:
       enabled: true
