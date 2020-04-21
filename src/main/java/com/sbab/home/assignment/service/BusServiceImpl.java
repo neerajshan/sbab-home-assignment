@@ -41,10 +41,7 @@ public class BusServiceImpl implements BusService {
             LOG.warn("Input Bus no {} is not a valid bus number", busnumber);
             throw new BusNotFoundException(String.format("Bus no %s is not a valid busnumber", busnumber));
         }
-
-        for (Businformation bs : byBusnumber) {
-            stops.add(bs.getBusstopnumber());
-        }
+        byBusnumber.stream().map(bs -> bs.getBusstopnumber()).forEach(st -> stops.add(st));
         busStopsResponse.setStops(stops);
         return busStopsResponse;
     }
