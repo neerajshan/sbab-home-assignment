@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,15 +32,10 @@ public class BusServiceImpl implements BusService {
     @Override
     public BusStopsResponse findAllStopsForBusnumber(String busnumber) {
         BusStopsResponse busStopsResponse = new BusStopsResponse();
-        Collection<String> stops = new ArrayList<>();
         busStopsResponse.setBusnumber(busnumber);
-        final Collection<Businformation> byBusnumber = busInformationRepository.findByBusnumber(busnumber);
-        if (byBusnumber.size() == 0) // Invalid bus number
-        {
-            LOG.warn("Input Bus no {} is not a valid bus number", busnumber);
-            throw new BusNotFoundException(String.format("Bus no %s is not a valid busnumber", busnumber));
-        }
-        byBusnumber.stream().map(bs -> bs.getBusstopnumber()).forEach(st -> stops.add(st));
+        final Collection<Businformation> busNumberSearchResult = busInformationRepository.findByBusnumber(busnumber);
+        busNumberSearchResult.stream().findAny().orElseThrow(() -> new BusNotFoundException(String.format("Bus no %s is not a valid busnumber", busnumber)));
+        final List<String> stops = busNumberSearchResult.stream().map(bs -> bs.getBusstopnumber()).collect(Collectors.toList());
         busStopsResponse.setStops(stops);
         return busStopsResponse;
     }
