@@ -12,12 +12,9 @@ public interface BusService {
 
     BusStopsResponse findAllStopsForBusnumber(String busnumber);
 
-
     Collection<String> getAllBuses();
 
-
     void refresh(List<Businformation> businformationList);
-
 
     List<TopBusLinesStopsResponse> getBusLinesWithMaxnumberOfBusStops(int limit);
 

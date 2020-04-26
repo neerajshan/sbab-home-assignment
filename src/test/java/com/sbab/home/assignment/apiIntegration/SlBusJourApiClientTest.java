@@ -1,38 +1,35 @@
 package com.sbab.home.assignment.apiIntegration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sbab.home.assignment.db.repository.BusInformationRepository;
 import com.sbab.home.assignment.service.BusService;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.verify;
 
-@SpringBootTest
+
 @TestPropertySource(properties = {"application.api.offlineMode=false"})
+@RunWith(SpringRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SlBusJourApiClientTest {
-    @Autowired
+
+    @Mock
     BusService busServiceImpl;
 
-    @MockBean
+    @Mock
     SlBusJourApiEndPoint slBusJourApiEndPointimpl;
 
-    @Autowired
-    RestTemplate restTemplate;
-
-    @Qualifier("target")
-    @Autowired
+    @InjectMocks
     SlBusJourApiClient target;
 
     String sampleResponse = "{\"StatusCode\":0,\n"
@@ -55,41 +52,32 @@ public class SlBusJourApiClientTest {
                             + "}]}}";
 
 
-    @Before
-    public void setUp() throws URISyntaxException {
-        slBusJourApiEndPointimpl = new SlBusJourApiEndPointImpl(restTemplate);
-        Mockito.when(slBusJourApiEndPointimpl.getApiResponse())
-                .thenReturn(sampleResponse);
+    @Test
+    public void testGetApiResponseData1() throws Exception {
+        Mockito.when(slBusJourApiEndPointimpl.getApiResponse()).thenReturn(sampleResponse);
+        target.fetchDataAndPopulateDatabase();
+        verify(busServiceImpl, atLeast(1)).refresh(Mockito.anyList());
     }
 
 
     @Test
-    public void testGetApiResponseData() throws IOException {
+    public void testGetApiResponseData2() throws IOException, URISyntaxException {
+        Mockito.when(slBusJourApiEndPointimpl.getApiResponse()).thenThrow(URISyntaxException.class);
+        Mockito.when(slBusJourApiEndPointimpl.getFalBackDataResponse()).thenReturn(sampleResponse);
         target.fetchDataAndPopulateDatabase();
-
+        verify(busServiceImpl, atLeast(1)).refresh(Mockito.anyList());
     }
 
 
-    @TestConfiguration
-    class SlBusJourApiClientTestContextConfiguration {
-
-        @MockBean
-        BusService busServiceImpl;
-
-        @MockBean
-        BusInformationRepository busInformationRepository;
-
-        @MockBean
-        SlBusJourApiEndPoint slBusJourApiEndPointimpl;
-
-        @MockBean
-        ObjectMapper objectMapper;
-
-
-        @Bean
-        @Qualifier("target")
-        public SlBusJourApiClient slbusJourApiClient() {
-            return new SlBusJourApiClient(slBusJourApiEndPointimpl, busServiceImpl, objectMapper);
-        }
+    @Test
+    public void testGetApiResponseData3() throws Exception {
+        Mockito.when(slBusJourApiEndPointimpl.getApiResponse()).thenReturn("{\n"
+                                                                           + "StatusCode: 1002,\n"
+                                                                           + "Message: \"Key is invalid\",\n"
+                                                                           + "}");
+        Mockito.when(slBusJourApiEndPointimpl.getFalBackDataResponse()).thenReturn(sampleResponse);
+        target.fetchDataAndPopulateDatabase();
+        verify(busServiceImpl, atLeast(1)).refresh(Mockito.anyList());
     }
+
 }

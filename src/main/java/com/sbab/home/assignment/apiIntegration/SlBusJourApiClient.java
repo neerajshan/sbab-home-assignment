@@ -30,17 +30,16 @@ public class SlBusJourApiClient {
 
     SlBusJourApiEndPoint slBusJourApiEndPointimpl;
 
-    ObjectMapper objectMapper;
+    ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${application.api.offlineMode:false}")
     boolean offlineMode;
 
 
     @Autowired
-    public SlBusJourApiClient(SlBusJourApiEndPoint slBusJourApiEndPointimpl, BusService busServiceImpl, ObjectMapper objectMapper) {
+    public SlBusJourApiClient(SlBusJourApiEndPoint slBusJourApiEndPointimpl, BusService busServiceImpl) {
         this.slBusJourApiEndPointimpl = slBusJourApiEndPointimpl;
         this.busServiceImpl = busServiceImpl;
-        this.objectMapper = objectMapper;
     }
 
 
@@ -91,7 +90,6 @@ public class SlBusJourApiClient {
 
 
     private List<BusJourResponse> getBusJourResponseList(String responseBody) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         JsonNode jsonNode = objectMapper.readTree(responseBody);
         final String statusCode = jsonNode.get("StatusCode").toPrettyString();

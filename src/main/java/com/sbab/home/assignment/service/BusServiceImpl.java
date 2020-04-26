@@ -6,9 +6,7 @@ import com.sbab.home.assignment.db.repository.BusInformationRepository.TopBusRes
 import com.sbab.home.assignment.dto.BusStopsResponse;
 import com.sbab.home.assignment.dto.TopBusLinesStopsResponse;
 import com.sbab.home.assignment.exceptionhandler.exceptions.BusNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,16 +16,10 @@ import java.util.stream.Collectors;
 
 
 @Service
+@AllArgsConstructor
 public class BusServiceImpl implements BusService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BusServiceImpl.class);
-    BusInformationRepository busInformationRepository;
-
-
-    @Autowired
-    public BusServiceImpl(BusInformationRepository busInformationRepository) {
-        this.busInformationRepository = busInformationRepository;
-    }
+    private final BusInformationRepository busInformationRepository;
 
 
     @Override
@@ -36,7 +28,7 @@ public class BusServiceImpl implements BusService {
         busStopsResponse.setBusnumber(busnumber);
         final Collection<Businformation> busNumberSearchResult = busInformationRepository.findByBusnumber(busnumber);
         busNumberSearchResult.stream().findAny().orElseThrow(() -> new BusNotFoundException(String.format("Bus no %s is not a valid busnumber", busnumber)));
-        final List<String> stops = busNumberSearchResult.stream().map(bs -> bs.getBusstopnumber()).collect(Collectors.toList());
+        final List<String> stops = busNumberSearchResult.stream().map(Businformation::getBusstopnumber).collect(Collectors.toList());
         busStopsResponse.setStops(stops);
         return busStopsResponse;
     }
