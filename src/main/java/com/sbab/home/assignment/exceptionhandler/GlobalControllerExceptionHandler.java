@@ -2,8 +2,7 @@ package com.sbab.home.assignment.exceptionhandler;
 
 import com.sbab.home.assignment.dto.APIError;
 import com.sbab.home.assignment.exceptionhandler.exceptions.BaseRunTimeException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +14,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHandler {
-
-    private static final Logger LOG = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
 
 
     @ExceptionHandler(BaseRunTimeException.class)
@@ -26,9 +24,9 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
 
         APIError apiError = new APIError(baseException.getMessage(), baseException.getTrackingCode());
 
-        LOG.warn("API Exception handler {} {}", baseException.getTrackingCode(), baseException.getMessage());
+        log.warn("API Exception handler {} {}", baseException.getTrackingCode(), baseException.getMessage());
         if (baseException.getCause() != null) {
-            LOG.warn("API Exception handler {} caused by {}", baseException.getTrackingCode(), baseException.getCause().getMessage());
+            log.warn("API Exception handler {} caused by {}", baseException.getTrackingCode(), baseException.getCause().getMessage());
         }
 
         if (baseException.getClass().isAnnotationPresent(ResponseStatus.class)) {
@@ -48,7 +46,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
     protected ResponseEntity handleUnknownException(
             RuntimeException ex, WebRequest request) {
 
-        LOG.error("API Exception handler found unknown error", ex);
+        log.error("API Exception handler found unknown error", ex);
 
         if (ex instanceof IllegalArgumentException) {
             return handleExceptionInternal(ex, new APIError("You sent something I don't understand, check your request"),
