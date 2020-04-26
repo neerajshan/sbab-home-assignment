@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sbab.home.assignment.db.model.Businformation;
 import com.sbab.home.assignment.dto.BusJourResponse;
+import com.sbab.home.assignment.exceptionhandler.exceptions.BadApiResponseException;
 import com.sbab.home.assignment.service.BusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,14 +30,17 @@ public class SlBusJourApiClient {
 
     SlBusJourApiEndPoint slBusJourApiEndPointimpl;
 
+    ObjectMapper objectMapper;
+
     @Value("${application.api.offlineMode:false}")
     boolean offlineMode;
 
 
     @Autowired
-    public SlBusJourApiClient(SlBusJourApiEndPoint slBusJourApiEndPointimpl, BusService busServiceImpl) {
+    public SlBusJourApiClient(SlBusJourApiEndPoint slBusJourApiEndPointimpl, BusService busServiceImpl, ObjectMapper objectMapper) {
         this.slBusJourApiEndPointimpl = slBusJourApiEndPointimpl;
         this.busServiceImpl = busServiceImpl;
+        this.objectMapper = objectMapper;
     }
 
 
@@ -58,6 +62,13 @@ public class SlBusJourApiClient {
             try {
                 // call Api and fetchData
                 responseBody = slBusJourApiEndPointimpl.getApiResponse();
+                JsonNode jsonNode = objectMapper.readTree(responseBody);
+                final String statusCode = jsonNode.get("StatusCode").toPrettyString();
+                if (!statusCode.equalsIgnoreCase("0")) {
+                    String cause = "Api response StatusCode= %s, errorMessage= %s";
+                    cause = String.format(cause, jsonNode.get("StatusCode").toPrettyString(), jsonNode.get("Message").toPrettyString());
+                    throw new BadApiResponseException(cause);
+                }
                 LOG.info("Successfully called api");
             } catch (Exception e) {
                 LOG.error("failed calling  api due to error", e);
@@ -76,7 +87,6 @@ public class SlBusJourApiClient {
                 .collect(Collectors.toList());
         busServiceImpl.refresh(businformationList);
         LOG.info("Saved all  " + businformationList.size());
-
     }
 
 
@@ -84,6 +94,16 @@ public class SlBusJourApiClient {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         JsonNode jsonNode = objectMapper.readTree(responseBody);
+        final String statusCode = jsonNode.get("StatusCode").toPrettyString();
+        if (statusCode.equalsIgnoreCase("0")) {
+            return getBusJourResponsesData(objectMapper, jsonNode);
+        }
+
+        return List.of();
+    }
+
+
+    private List<BusJourResponse> getBusJourResponsesData(ObjectMapper objectMapper, JsonNode jsonNode) throws JsonProcessingException {
         String result = jsonNode.get("ResponseData").get("Result").toPrettyString().toLowerCase();
         return objectMapper.readValue(result.toLowerCase(), new TypeReference<List<BusJourResponse>>() {
         });
