@@ -7,10 +7,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sbab.home.assignment.db.model.Businformation;
 import com.sbab.home.assignment.dto.BusJourResponse;
+import com.sbab.home.assignment.exceptionhandler.exceptions.BadApiResponseException;
 import com.sbab.home.assignment.service.BusService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -22,31 +22,27 @@ import java.util.stream.Collectors;
 
 
 @Component
+@RequiredArgsConstructor
+@Slf4j
 public class SlBusJourApiClient {
-    private static final Logger LOG = LoggerFactory.getLogger(SlBusJourApiClient.class);
 
-    BusService busServiceImpl;
+    final BusService busServiceImpl;
 
-    SlBusJourApiEndPoint slBusJourApiEndPointimpl;
+    final SlBusJourApiEndPoint slBusJourApiEndPointimpl;
+
+    ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${application.api.offlineMode:false}")
     boolean offlineMode;
 
 
-    @Autowired
-    public SlBusJourApiClient(SlBusJourApiEndPoint slBusJourApiEndPointimpl, BusService busServiceImpl) {
-        this.slBusJourApiEndPointimpl = slBusJourApiEndPointimpl;
-        this.busServiceImpl = busServiceImpl;
-    }
-
-
     @PostConstruct
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 0 * * ?") // can be read from any configuration files
     public void fetchDataAndPopulateDatabase() throws IOException {
         String responseBody = getApiResponseData();
         List<BusJourResponse> busJourResponseList = getBusJourResponseList(responseBody);
         persistBusJourData(busJourResponseList);
-        LOG.info("Application is ready now");
+        log.info("Application is ready now");
     }
 
 
@@ -58,11 +54,18 @@ public class SlBusJourApiClient {
             try {
                 // call Api and fetchData
                 responseBody = slBusJourApiEndPointimpl.getApiResponse();
-                LOG.info("Successfully called api");
+                JsonNode jsonNode = objectMapper.readTree(responseBody);
+                final String statusCode = jsonNode.get("StatusCode").toPrettyString();
+                if (!statusCode.equalsIgnoreCase("0")) {
+                    String cause = "Api response StatusCode= %s, errorMessage= %s";
+                    cause = String.format(cause, jsonNode.get("StatusCode").toPrettyString(), jsonNode.get("Message").toPrettyString());
+                    throw new BadApiResponseException(cause);
+                }
+                log.info("Successfully called api");
             } catch (Exception e) {
-                LOG.error("failed calling  api due to error", e);
+                log.error("failed calling  api due to error", e);
                 // n.w. read or connection time out has occurred read cached file
-                LOG.info("reading data from Cached File");
+                log.info("reading data from Cached File");
                 responseBody = slBusJourApiEndPointimpl.getFalBackDataResponse();
             }
         }
@@ -75,15 +78,23 @@ public class SlBusJourApiClient {
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
         busServiceImpl.refresh(businformationList);
-        LOG.info("Saved all  " + businformationList.size());
-
+        log.info("Saved all  " + businformationList.size());
     }
 
 
     private List<BusJourResponse> getBusJourResponseList(String responseBody) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         JsonNode jsonNode = objectMapper.readTree(responseBody);
+        final String statusCode = jsonNode.get("StatusCode").toPrettyString();
+        if (statusCode.equalsIgnoreCase("0")) {
+            return getBusJourResponsesData(objectMapper, jsonNode);
+        }
+
+        return List.of();
+    }
+
+
+    private List<BusJourResponse> getBusJourResponsesData(ObjectMapper objectMapper, JsonNode jsonNode) throws JsonProcessingException {
         String result = jsonNode.get("ResponseData").get("Result").toPrettyString().toLowerCase();
         return objectMapper.readValue(result.toLowerCase(), new TypeReference<List<BusJourResponse>>() {
         });

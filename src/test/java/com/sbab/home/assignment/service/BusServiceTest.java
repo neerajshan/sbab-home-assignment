@@ -88,10 +88,6 @@ public class BusServiceTest {
         List<TopBusLinesStopsResponse> topBusLinesStopsResponseList = busServiceImpl.getBusLinesWithMaxnumberOfBusStops(10);
         assertEquals(topBusLinesStopsResponseList.size(), 10);
 
-//        topBusLinesStopsResponseList.stream().forEach(
-//                topBusLinesStopsResponse -> assertTrue(findTopBus.contains(topBusLinesStopsResponse))
-//        );
-
         topBusLinesStopsResponseList = busServiceImpl.getBusLinesWithMaxnumberOfBusStops(7);
         assertEquals(topBusLinesStopsResponseList.size(), 7);
 

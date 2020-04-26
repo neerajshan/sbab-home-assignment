@@ -1,5 +1,6 @@
 package com.sbab.home.assignment.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,12 @@ public class ApplicationComponents {
     @Bean
     public RestTemplate getRestTemplate() {
         return new RestTemplate(getClientHttpRequestFactory());
+    }
+
+
+    @Bean
+    public ObjectMapper getObjectMapper() {
+        return new ObjectMapper();
     }
 
 

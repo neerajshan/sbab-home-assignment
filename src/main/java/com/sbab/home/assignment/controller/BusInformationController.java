@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,16 +24,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/bus")
 @Tag(name = "Bus Service Application", description = "Bus API V1")
+@AllArgsConstructor
 public class BusInformationController {
 
     BusService busServiceImpl;
-
-
-    @Autowired
-    public BusInformationController(BusService busServiceImpl) {
-        this.busServiceImpl = busServiceImpl;
-    }
-
 
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
